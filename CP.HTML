@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahalakshmi Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="menu-bar">
+        <h2>Navigation</h2>
+        <button class="menu-btn active" data-section="dashboard">Dashboard</button>
+        <button class="menu-btn" data-section="verification">Verification</button>
+        <button class="menu-btn" data-section="add-expenses">Add Expense</button>
+        <button class="menu-btn" data-section="view-expenses">View Expenses</button>
+        <button class="menu-btn" data-section="set-budget">Budget</button>
+        <button class="menu-btn" data-section="my-wallet">Wallet</button>
+        <button class="menu-btn" data-section="grade-details">Grade</button>
+        <button class="menu-btn" data-section="reports">Reports</button>
+        <button class="menu-btn" data-section="settings">Settings & Privacy</button>
+    </div>
+
+    <div class="content-area">
+        <h1 class="main-heading"><strong>Mahalakshmi Expense Tracker</strong></h1>
+
+        <div id="dashboard" class="section active dashboard-section">
+            <h2>Dashboard</h2>
+            <p>Welcome to your Mahalakshmi Expense Tracker!</p>
+            <p id="verification-required-message" style="color: red; font-weight: bold; display: none;">Please complete verification to unlock all features.</p>
+            <div class="dashboard-widgets">
+                <div class="widget">
+                    <h3>Budget</h3>
+                    <p>Set Budget: <span id="dashboard-budget">0</span></p>
+                </div>
+                <div class="widget">
+                    <h3>Wallet Balance</h3>
+                    <p>Balance: <span id="dashboard-wallet">0</span></p>
+                </div>
+                <div class="widget">
+                    <h3>Tracking Status</h3>
+                    <div class="expense-tracker-status dashboard-status" id="dashboard-tracker-status">N/A</div>
+                </div>
+                 <div class="widget">
+                    <h3>Current Grade</h3>
+                    <p><span id="dashboard-grade">Not Available</span></p>
+                </div>
+                <div id="cashback-summary" class="widget">
+                    <h3>Total Cashback</h3>
+                    <p>₹<span id="dashboard-cashback">0</span></p>
+                </div>
+            </div>
+            <p>Your grade will be assigned and cashback applied 30 days after you add your first expense.</p>
+            <button id="renewal-button" style="display: none;">Renew Tracker</button>
+        </div>
+
+        <div id="verification" class="section verification-section">
+            <h2>Verification</h2>
+            <div id="verification-form">
+                <p>Please provide your details for verification. All fields are mandatory.</p>
+                <label for="verification-name">Full Name:</label>
+                <input type="text" id="verification-name" required>
+
+                <label for="verification-gender">Gender:</label>
+                <select id="verification-gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="verification-dob">Date of Birth:</label>
+                <input type="date" id="verification-dob" required>
+
+                <label for="verification-aadhar">Aadhaar Number (12 digits):</label>
+                <input type="text" id="verification-aadhar" pattern="[0-9]{12}" title="Aadhaar number must be 12 digits" required>
+
+                <button id="verify-btn" class="action-button">Verify Details</button>
+                <p id="verification-status-message"></p>
+            </div>
+
+            <div id="verification-success-message" style="display: none;">
+                <p style="color: green; font-weight: bold;">Verification successful! You can now access all features.</p>
+                <button id="move-to-budget-btn" class="action-button">Move to Budget Set Page</button>
+            </div>
+        </div>
+
+
+        <div id="add-expenses" class="section add-expense-section">
+            <h2>Add Expense</h2>
+            <label for="expense-name">Expense Name:</label>
+            <input type="text" id="expense-name">
+            <label for="expense-amount">Expense Amount:</label>
+            <input type="number" id="expense-amount" min="0.01">
+            <button id="add-expense-btn" class="action-button">Add Expense</button>
+            <h3>Recent Expenses</h3>
+            <ul id="recent-expense-list"></ul>
+        </div>
+
+        <div id="view-expenses" class="section view-expenses-section">
+            <h2>View Expenses</h2>
+            <ul id="expense-list"></ul>
+            <p>Total Expenses: ₹<span id="total-expenses">0</span></p>
+        </div>
+
+        <div id="set-budget" class="section set-budget-section">
+            <h2>Set Budget</h2>
+            <p>Set your monthly budget to start tracking your expenses.</p>
+            <label for="budget-amount">Budget Amount:</label>
+            <input type="number" id="budget-amount" min="1" required>
+            <button id="set-budget-btn" class="action-button">Set Budget</button>
+        </div>
+
+        <div id="my-wallet" class="section wallet-section">
+            <h2>Wallet</h2>
+            <p>Set Budget: <span id="display-budget">0</span></p>
+            <p>Current Balance: <span id="wallet-balance">0</span></p>
+            <label for="add-funds">Add Funds:</label>
+            <input type="number" id="add-funds" min="0" required>
+            <button id="add-funds-btn" class="action-button">Add Funds</button>
+            <label for="withdraw-amount">Withdraw Funds:</label>
+            <input type="number" id="withdraw-amount" min="1">
+            <button id="withdraw-btn" class="action-button">Withdraw</button>
+            <p id="withdrawal-message"></p>
+        </div>
+
+         <div id="grade-details" class="section grade-details-section">
+            <h2>Grade Details and Cashback</h2>
+            <p>Your spending habits over the 30-day tracking period are graded based on how much of your set budget you utilize.</p>
+
+            <h3>Grading Criteria and Cashback Amounts:</h3>
+            <p>Cashback amounts depend on your Gender and Grade achieved.</p>
+            <ul>
+                <li><strong>Grade A (Excellent):</strong> Spending is 60% or less of the budget.
+                    <ul>
+                        <li>Female: ₹250 Cashback</li>
+                        <li>Male/Other: ₹150 Cashback</li>
+                        <li><strong>First Time Grade A Bonus:</strong></li>
+                          <li>Female: Additional ₹250 (Total ₹500) - Awarded only the very first time Grade A is achieved.</li>
+                          <li>Male/Other: Additional ₹100 (Total ₹250) - Awarded only the very first time Grade A is achieved.</li>
+                    </ul>
+                </li>
+                <li><strong>Grade B (Good):</strong> Spending is between 60% and 85% of the budget.
+                    <ul>
+                        <li>Female: ₹100 Cashback</li>
+                        <li>Male/Other: ₹50 Cashback</li>
+                    </ul>
+                </li>
+                <li><strong>Grade C (Average):</strong> Spending is between 85% and 100% of the budget.
+                      <ul>
+                        <li>Female: ₹50 Cashback</li>
+                        <li>Male/Other: ₹20 Cashback</li>
+                      </ul>
+                </li>
+                <li><strong>Needs Improvement:</strong> Spending exceeds 100% of the budget. (No Cashback)</li>
+            </ul>
+
+             <div class="current-grade-summary widget">
+                 <h3>Your Last Period's Performance:</h3>
+                 <p>Grade: <span id="last-period-grade">N/A</span></p>
+                 <p>Cashback Earned: ₹<span id="last-period-cashback">0</span></p>
+                 <p id="first-time-bonus-status" style="display: none;">First Time Grade A Bonus Earned: Yes</p>
+             </div>
+              <div id="month-wise-cashback" style="display: none;">
+                <h3>Month-wise Cashback and Grades</h3>
+                <ul id="cashback-list">
+                </ul>
+            </div>
+        </div>
+
+        <div id="reports" class="section reports-section">
+            <h2>Reports</h2>
+            <p>Coming soon: Detailed expense reports and analytics.</p>
+        </div>
+
+        <div id="settings" class="section settings-section">
+            <h2>Settings & Privacy</h2>
+            <ul>
+                <li><button>Account</button></li>
+                <li><button>Preferences</button></li>
+                <li><button>Privacy</button></li>
+                <li><button>Support</button></li>
+                <li><button>About</button></li>
+            </ul>
+            <div id="account-settings" class="sub-settings" style="display: none;">
+                <h3>Account</h3>
+                <p>Edit Profile, Change Password, Notification Settings</p>
+            </div>
+            <div id="preferences-settings" class="sub-settings" style="display: none;">
+                <h3>Preferences</h3>
+                <p>Theme (Purple & White), Currency, Date Format</p>
+            </div>
+            <div id="privacy-settings" class="sub-settings" style="display: none;">
+                <h3>Privacy</h3>
+                <p>Data Usage, Privacy Policy, Terms of Service</p>
+            </div>
+            <div id="support-settings" class="sub-settings" style="display: none;">
+                <h3>FAQ, Contact Us, Help Center</p>
+            </div>
+            <div id="about-settings" class="sub-settings" style="display: none;">
+                <h3>About</h3>
+                <p>App Version, Developer Info</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="budget-set-popup" class="popup">
+        <p>Budget set successfully! You can now add funds to your wallet.</p>
+        <button onclick="closePopup()">OK</button>
+    </div>
+
+    <div id="renewal-popup" class="popup">
+        <h2>Monthly Tracking Ended</h2>
+        <p>Your 30-day tracking period has ended. Please renew to continue tracking your expenses for the next month.</p>
+        <button id="confirm-renewal-btn">Renew Now</button>
+        <button id="cancel-renewal-btn">Later</button>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
